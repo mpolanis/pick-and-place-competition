@@ -28,10 +28,10 @@ armMotors.append(robot.getDevice("arm3"))
 armMotors.append(robot.getDevice("arm4"))
 armMotors.append(robot.getDevice("arm5"))
 # Set the maximum motor velocity.
-armMotors[0].setVelocity(0.2)
-armMotors[1].setVelocity(0.5)
-armMotors[2].setVelocity(0.5)
-armMotors[3].setVelocity(0.3)
+armMotors[0].setVelocity(1.5708)
+armMotors[1].setVelocity(1.5708)
+armMotors[2].setVelocity(1.5708)
+armMotors[3].setVelocity(1.5708)
 
 # Initialize arm position sensors.
 # These sensors can be used to get the current joint position and monitor the joint movements.
@@ -48,82 +48,100 @@ for sensor in armPositionSensors:
 finger1 = robot.getDevice("finger1")
 finger2 = robot.getDevice("finger2")
 # Set the maximum motor velocity.
-finger1.setVelocity(0.03)
-finger2.setVelocity(0.03)
+finger1.setVelocity(10) #max
+finger2.setVelocity(10)
 # Read the minium and maximum position of the gripper motors.
 fingerMinPosition = finger1.getMinPosition()
 fingerMaxPosition = finger1.getMaxPosition()
 
 # Move forward.
 for wheel in wheels:
-    wheel.setVelocity(7.0)
-# Wait until the robot is in front of the box.
-robot.step(520 * timestep)
+    wheel.setVelocity(14.79) #max - 0.02 because we reach to the belt before it stops with 14.81
 
-# Stop moving forward.
-for wheel in wheels:
-    wheel.setVelocity(0.0)
-
-# Move arm and open gripper.
-armMotors[1].setPosition(-0.55)
-armMotors[2].setPosition(-0.9)
-armMotors[3].setPosition(-1.5)
+# Move arm and open gripper. #do this action will going to belt
+armMotors[1].setPosition(-1.13446) #max
+armMotors[2].setPosition(-0.7)
+armMotors[3].setPosition(-0.03)
 finger1.setPosition(fingerMaxPosition)
 finger2.setPosition(fingerMaxPosition)
 
-# Monitor the arm joint position to detect when the motion is completed.
-while robot.step(timestep) != -1:
-    if abs(armPositionSensors[3].getValue() - (-1.2)) < 0.01:
+# Wait until the robot is in front of the box.
+robot.step(237 * timestep)
+
+# Stop moving forward. #no need to stop
+#for wheel in wheels:
+    #wheel.setVelocity(0.0)
+
+# Monitor the arm joint position to detect when the motion is completed. #this stopped the sim
+#while robot.step(timestep) != -1:
+    #if abs(armPositionSensors[3].getValue() - (-1.2)) < 0.01:
         # Motion completed.
-        break
+        #break
 
 # Close gripper.
 finger1.setPosition(0.013)
 finger2.setPosition(0.013)
 # Wait until the gripper is closed.
-robot.step(50 * timestep)
+robot.step(30 * timestep)
 
-# Lift arm.
-armMotors[1].setPosition(0)
+# Lift arm. #no need to lift
+#armMotors[1].setPosition(0)
 # Wait until the arm is lifted.
-robot.step(200 * timestep)
+#robot.step(200 * timestep)
 
 # Rotate the robot.
-wheels[0].setVelocity(2.5)
-wheels[1].setVelocity(-2.5)
-wheels[2].setVelocity(2.5)
-wheels[3].setVelocity(-2.5)
+#wheels[0].setVelocity(12.5)
+#wheels[1].setVelocity(-12.5)
+#wheels[2].setVelocity(2.5)
+#wheels[3].setVelocity(-2.5)
 # Wait for a fixed amount to step that the robot rotates.
-robot.step(690 * timestep)
+#robot.step(690 * timestep)
 
 # Move forward.
-wheels[1].setVelocity(2.5)
-wheels[3].setVelocity(2.5)
-robot.step(900 * timestep)
+#wheels[1].setVelocity(2.5)
+#wheels[3].setVelocity(2.5)
+#robot.step(900 * timestep)
 
 # Rotate the robot.
-wheels[0].setVelocity(1.0)
-wheels[1].setVelocity(-1.0)
-wheels[2].setVelocity(1.0)
-wheels[3].setVelocity(-1.0)
-robot.step(200 * timestep)
+#wheels[0].setVelocity(1.0)
+#wheels[1].setVelocity(-1.0)
+#wheels[2].setVelocity(1.0)
+#wheels[3].setVelocity(-1.0)
+#robot.step(200 * timestep)
 
 # Move forward.
-wheels[1].setVelocity(1.0)
-wheels[3].setVelocity(1.0)
-robot.step(300 * timestep)
+#wheels[1].setVelocity(1.0)
+#wheels[3].setVelocity(1.0)
+#robot.step(300 * timestep)
 
 # Rotate the robot.
-wheels[0].setVelocity(1.0)
-wheels[1].setVelocity(-1.0)
-wheels[2].setVelocity(1.0)
-wheels[3].setVelocity(-1.0)
-robot.step(130 * timestep)
+#wheels[0].setVelocity(1.0)
+#wheels[1].setVelocity(-1.0)
+#wheels[2].setVelocity(1.0)
+#wheels[3].setVelocity(-1.0)
+#robot.step(130 * timestep)
 
 # Move forward.
-wheels[1].setVelocity(1.0)
-wheels[3].setVelocity(1.0)
-robot.step(310 * timestep)
+#wheels[1].setVelocity(1.0)
+#wheels[3].setVelocity(1.0)
+#robot.step(310 * timestep)
+
+#instead of rotating and moving we will go backwords and rotate one time
+wheels[0].setVelocity(-14.81) #go back at max speed
+wheels[1].setVelocity(-14.81) 
+wheels[2].setVelocity(-14.81)
+wheels[3].setVelocity(-14.81)
+robot.step(292 * timestep)
+wheels[0].setVelocity(13) #turn left
+wheels[1].setVelocity(-14.81) 
+wheels[2].setVelocity(13)
+wheels[3].setVelocity(-14.81)
+robot.step(60 * timestep)
+wheels[0].setVelocity(14.81) #move a bit forward
+wheels[1].setVelocity(14.81) 
+wheels[2].setVelocity(14.81)
+wheels[3].setVelocity(14.81)
+robot.step(47 * timestep)
 
 # Stop.
 for wheel in wheels:
@@ -132,13 +150,13 @@ for wheel in wheels:
 # Move arm down
 armMotors[3].setPosition(0)
 armMotors[2].setPosition(-0.3)
-robot.step(200 * timestep)
+robot.step(50 * timestep)
 
 armMotors[1].setPosition(-1.0)
-robot.step(200 * timestep)
+robot.step(50 * timestep)
 
 armMotors[3].setPosition(-1.0)
-robot.step(200 * timestep)
+robot.step(50 * timestep)
 
 armMotors[2].setPosition(-0.4)
 robot.step(50 * timestep)
